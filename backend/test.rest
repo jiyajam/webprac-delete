@@ -1,0 +1,20 @@
+### Get all courses
+GET http://localhost:4000/api/courses
+
+### Get a single course
+GET http://localhost:4000/api/courses/6935831a3e4de109b63df5f2
+
+### Add a course
+POST http://localhost:4000/api/courses
+Content-Type: application/json
+
+{
+  "title": "React Basics",
+  "duration": "3 months",
+  "fee": 150,
+  "instructor": {
+    "name": "John Doe",
+    "contactEmail": "john@example.com",
+    "contactPhone": "1234567890"
+  }
+}
