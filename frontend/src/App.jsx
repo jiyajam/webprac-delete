@@ -6,6 +6,7 @@ import AddCoursePage from './pages/AddCoursePage'
 import Navbar from './components/Navbar'
 import NotFoundPage from './pages/NotFoundPage'
 import CoursePage from './pages/CoursePage'
+import EditCoursePage from './pages/EditCoursePage'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path='/' element={<Home />} />
             <Route path='/add-course' element={<AddCoursePage />} />
             <Route path='/courses/:id' element={<CoursePage />} />
+            <Route path='/edit-course/:id' element={<EditCoursePage />} />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </div>

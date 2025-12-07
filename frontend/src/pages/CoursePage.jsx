@@ -66,6 +66,9 @@ const CoursePage = () => {
           <p>Email: {course.instructor.contactEmail}</p>
           <p>Phone: {course.instructor.contactPhone}</p>
           <button onClick={() => onDeleteClick(course._id)}>delete</button>
+          <button onClick={() => navigate(`/edit-course/${course._id}`)}>
+            edit
+          </button>
         </>
       )}
     </div>
