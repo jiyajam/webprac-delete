@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const courseRouter = require('./routes/courseRouter')
+const userRouter = require('./routes/userRouter')
 const {
   unknownEndpoint,
   errorHandler,
@@ -15,8 +16,10 @@ app.use(express.json())
 
 connectDB()
 
-// Use the courseRouter for all "/courses" routes
+// Use the jobRouter for all "/jobs" routes
 app.use('/api/courses', courseRouter)
+// Use the userRouter for all "/jobs" routes
+app.use('/api/users', userRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
@@ -24,5 +27,5 @@ app.use(errorHandler)
 module.exports = app
 
 // app.listen(process.env.PORT, () => {
-//   console.log(`Server running on port ${process.env.PORT}`);
-// });
+//   console.log(`Server running on port ${process.env.PORT}`)
+// })
