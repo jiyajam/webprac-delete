@@ -25,6 +25,9 @@ const EditCoursePage = () => {
   const [contactEmail, setContactEmail] = useState('')
   const [contactPhone, setContactPhone] = useState('')
 
+  const user = JSON.parse(localStorage.getItem('user'))
+  const token = user ? user.token : null
+
   const navigate = useNavigate()
 
   const updateCourse = async (course) => {
@@ -33,6 +36,7 @@ const EditCoursePage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(course),
       })

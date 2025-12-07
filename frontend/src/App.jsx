@@ -1,28 +1,68 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useState } from 'react'
 
 // pages & components
-import Home from './pages/HomePage'
-import CoursePage from './pages/CoursePage'
-import AddCoursePage from './pages/AddCoursePage'
 import Navbar from './components/Navbar'
-import NotFoundPage from './pages/NotFoundPage'
+import Home from './pages/HomePage'
+import AddCoursePage from './pages/AddCoursePage'
+import CoursePage from './pages/CoursePage'
 import EditCoursePage from './pages/EditCoursePage'
-import Signup from './pages/Signup'
+import NotFoundPage from './pages/NotFoundPage'
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    return user && user.token ? true : false
+  })
+
   return (
     <div className='App'>
       <BrowserRouter>
-        <Navbar />
+        <Navbar
+          isAuthenticated={isAuthenticated}
+          setIsAuthenticated={setIsAuthenticated}
+        />
         <div className='content'>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/courses/:id' element={<CoursePage />} />
-            <Route path='/courses/add-course' element={<AddCoursePage />} />
-            <Route path='/edit-course/:id' element={<EditCoursePage />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/login' element={<Login />} />
+            <Route
+              path='/courses/:id'
+              element={<CoursePage isAuthenticated={isAuthenticated} />}
+            />
+            <Route
+              path='/courses/add-course'
+              element={
+                isAuthenticated ? <AddCoursePage /> : <Navigate to='/signup' />
+              }
+            />
+            <Route
+              path='/edit-course/:id'
+              element={
+                isAuthenticated ? <EditCoursePage /> : <Navigate to='/signup' />
+              }
+            />
+            <Route
+              path='/signup'
+              element={
+                isAuthenticated ? (
+                  <Navigate to='/' />
+                ) : (
+                  <Signup setIsAuthenticated={setIsAuthenticated} />
+                )
+              }
+            />
+            <Route
+              path='/login'
+              element={
+                isAuthenticated ? (
+                  <Navigate to='/' />
+                ) : (
+                  <Login setIsAuthenticated={setIsAuthenticated} />
+                )
+              }
+            />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </div>

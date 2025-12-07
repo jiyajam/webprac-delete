@@ -8,10 +8,16 @@ const CoursePage = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const user = JSON.parse(localStorage.getItem('user'))
+  const token = user ? user.token : null
+
   const deleteCourse = async (id) => {
     try {
       const res = await fetch(`/api/courses/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       if (!res.ok) {
         throw new Error('Failed to delete course')

@@ -9,7 +9,6 @@ GET http://localhost:4000/api/courses/6935831a3e4de109b63df5f2
 POST http://localhost:4000/api/courses
 Content-Type: application/json
 
-[
   {
     "title": "React Basics",
   "duration": "3 months",
@@ -19,30 +18,45 @@ Content-Type: application/json
     "contactEmail": "john@example.com",
     "contactPhone": "1234567890"
   }
-},
-{
-    "title": "Advanced JavaScript",
-    "duration": "2 months",
-    "fee": 200,
-    "instructor": {
-      "name": "Jane Smith",
-      "contactEmail": "jane@example.com",
-      "contactPhone": "0987654321"
-      }
-      },
-      {
-    "title": "Python for Data Science",
-    "duration": "4 months",
-    "fee": 250,
-    "instructor": {
-      "name": "Alice Johnson",
-      "contactEmail": "alice@example.com",
-      "contactPhone": "1122334455"
-    }
   }
-  
-]
 
 ###Delete a course
 
+
 DELETE  http://localhost:4000/api/courses/6935831a3e4de109b63df5f2
+
+
+###Update a course
+PUT http://localhost:4000/api/courses/6935942842431b6a233f1883
+Content-Type: application/json
+
+  {
+    "title": "ROOOOOO"}
+
+
+### Signup a new user
+
+POST http://localhost:4000/api/users/signup
+Content-Type: application/json
+
+{
+"username": "johndoe",
+"password": "123456",
+"name": "John Doe",
+"gender": "Male",
+"date_of_birth": "1990-01-01",
+"address": "123 Street, City",
+"occupation": "Engineer"
+}
+
+### Login user
+
+POST http://localhost:4000/api/users/login
+Content-Type: application/json
+
+{
+"username": "johndoe",
+"password": "123456"
+}
+
+

@@ -7,6 +7,7 @@ const getAllCourses = async (req, res) => {
     const courses = await Course.find({}).sort({ createdAt: -1 })
     res.status(200).json(courses)
   } catch (error) {
+    console.error('Error fetching courses:', error)
     res.status(500).json({ message: 'Failed to retrieve courses' })
   }
 }
@@ -14,76 +15,79 @@ const getAllCourses = async (req, res) => {
 // POST /courses
 const createCourse = async (req, res) => {
   try {
-    const newCourse = await Course.create({ ...req.body })
+    const user_id = req.user._id
+    const newCourse = new Course({
+      ...req.body,
+      user_id,
+    })
+    await newCourse.save()
     res.status(201).json(newCourse)
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: 'Failed to create Course', error: error.message })
+    console.error('Error creating course:', error)
+    res.status(500).json({ error: 'Server Error' })
   }
 }
 
 // GET /courses/:courseId
 const getCourseById = async (req, res) => {
   const { courseId } = req.params
-
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    return res.status(400).json({ message: 'Invalid course ID' })
+    return res.status(404).json({ error: 'No such course' })
   }
 
   try {
     const course = await Course.findById(courseId)
-    if (course) {
-      res.status(200).json(course)
-    } else {
-      res.status(404).json({ message: 'Course not found' })
+    if (!course) {
+      console.log('Course not found')
+      return res.status(404).json({ message: 'Course not found' })
     }
+    res.status(200).json(course)
   } catch (error) {
-    res.status(500).json({ message: 'Failed to retrieve course' })
+    console.error('Error fetching course:', error)
+    res.status(500).json({ error: 'Server Error' })
   }
 }
 
 // PUT /courses/:courseId
 const updateCourse = async (req, res) => {
   const { courseId } = req.params
-
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    return res.status(400).json({ message: 'Invalid course ID' })
+    return res.status(404).json({ error: 'No such course' })
   }
 
   try {
-    const updatedCourse = await Course.findOneAndUpdate(
+    // const user_id = req.user._id;
+    const course = await Course.findOneAndUpdate(
       { _id: courseId },
       { ...req.body },
       { new: true }
     )
-    if (updatedCourse) {
-      res.status(200).json(updatedCourse)
-    } else {
-      res.status(404).json({ message: 'Course not found' })
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' })
     }
+    res.status(200).json(course)
   } catch (error) {
-    res.status(500).json({ message: 'Failed to update course' })
+    console.error('Error updating course:', error)
+    res.status(500).json({ error: 'Server Error' })
   }
 }
-
 // DELETE /courses/:courseId
 const deleteCourse = async (req, res) => {
   const { courseId } = req.params
-
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    return res.status(400).json({ message: 'Invalid course ID' })
+    return res.status(404).json({ error: 'No such course' })
   }
 
   try {
-    const deletedCourse = await Course.findOneAndDelete({ _id: courseId })
-    if (deletedCourse) {
-      res.status(204).send() // 204 No Content
-    } else {
-      res.status(404).json({ message: 'Course not found' })
+    // const user_id = req.user._id;
+    const course = await Course.findOneAndDelete({ _id: courseId })
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' })
     }
+    res.status(204).send() // 204 No Content
   } catch (error) {
-    res.status(500).json({ message: 'Failed to delete course' })
+    console.error('Error deleting course:', error)
+    res.status(500).json({ error: 'Server Error' })
   }
 }
 module.exports = {
