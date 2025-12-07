@@ -4,12 +4,14 @@ GET http://localhost:4000/api/courses
 ### Get a single course
 GET http://localhost:4000/api/courses/6935831a3e4de109b63df5f2
 
+
 ### Add a course
 POST http://localhost:4000/api/courses
 Content-Type: application/json
 
-{
-  "title": "React Basics",
+[
+  {
+    "title": "React Basics",
   "duration": "3 months",
   "fee": 150,
   "instructor": {
@@ -17,4 +19,30 @@ Content-Type: application/json
     "contactEmail": "john@example.com",
     "contactPhone": "1234567890"
   }
-}
+},
+{
+    "title": "Advanced JavaScript",
+    "duration": "2 months",
+    "fee": 200,
+    "instructor": {
+      "name": "Jane Smith",
+      "contactEmail": "jane@example.com",
+      "contactPhone": "0987654321"
+      }
+      },
+      {
+    "title": "Python for Data Science",
+    "duration": "4 months",
+    "fee": 250,
+    "instructor": {
+      "name": "Alice Johnson",
+      "contactEmail": "alice@example.com",
+      "contactPhone": "1122334455"
+    }
+  }
+  
+]
+
+###Delete a course
+
+DELETE  http://localhost:4000/api/courses/6935831a3e4de109b63df5f2

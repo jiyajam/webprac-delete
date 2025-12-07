@@ -25,7 +25,22 @@ const createCourse = async (req, res) => {
 
 // GET /courses/:courseId
 const getCourseById = async (req, res) => {
-  res.send('getCourseById')
+  const { courseId } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    return res.status(400).json({ message: 'Invalid course ID' })
+  }
+
+  try {
+    const course = await Course.findById(courseId)
+    if (course) {
+      res.status(200).json(course)
+    } else {
+      res.status(404).json({ message: 'Course not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve course' })
+  }
 }
 
 // PUT /courses/:courseId
@@ -35,9 +50,23 @@ const updateCourse = async (req, res) => {
 
 // DELETE /courses/:courseId
 const deleteCourse = async (req, res) => {
-  res.send('deleteCourse')
-}
+  const { courseId } = req.params
 
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    return res.status(400).json({ message: 'Invalid course ID' })
+  }
+
+  try {
+    const deletedCourse = await Course.findOneAndDelete({ _id: courseId })
+    if (deletedCourse) {
+      res.status(204).send() // 204 No Content
+    } else {
+      res.status(404).json({ message: 'Course not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete course' })
+  }
+}
 module.exports = {
   getAllCourses,
   getCourseById,

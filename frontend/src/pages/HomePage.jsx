@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import CourseListings from '../components/CourseListings'
 
 const Home = () => {
@@ -29,7 +30,7 @@ const Home = () => {
     <div className='home'>
       {error && <div>{error}</div>}
       {isPending && <div>Loading...</div>}
-      {jobs && <CourseListings courses={courses} />}
+      {courses && <CourseListings courses={courses} />}
     </div>
   )
 }
